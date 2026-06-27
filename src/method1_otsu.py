@@ -19,7 +19,7 @@ def morphological_cleanup(binary):
 
 
 def run(img_path):
-    """Run Otsu segmentation pipeline on an image path."""
+   
     import os
     from preprocessing import preprocess
 

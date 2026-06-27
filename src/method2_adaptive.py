@@ -3,7 +3,7 @@ import numpy as np
 
 
 def segment_adaptive(gray):
-    """Segment image using adaptive Gaussian thresholding."""
+  
     binary = cv2.adaptiveThreshold(
         gray,
         255,
@@ -16,8 +16,28 @@ def segment_adaptive(gray):
 
 
 def apply_morphology(binary):
-    """Clean binary mask using opening then closing."""
+  
     kernel = np.ones((3, 3), np.uint8)
     opening = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel, iterations=1)
     return closing
+
+
+def run(img_path):
+ 
+    import os
+    from preprocessing import preprocess
+
+    orig_bgr, gray = preprocess(img_path)
+    binary = segment_adaptive(gray)
+    cleaned = apply_morphology(binary)
+    os.makedirs("results", exist_ok=True)
+    cv2.imwrite("results/method2_adaptive_result.jpg", cleaned)
+    return cleaned
+
+
+if __name__ == "__main__":
+    import sys
+    mask = run(sys.argv[1])
+    print(f"Mask shape: {mask.shape}")
+    print(f"Unique values: {list(set(mask.flatten()))}")
