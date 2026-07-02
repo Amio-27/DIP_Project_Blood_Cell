@@ -26,6 +26,8 @@ def apply_morphology(binary):
 def run(img_path):
  
     import os
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from preprocessing import preprocess
 
     orig_bgr, gray = preprocess(img_path)
